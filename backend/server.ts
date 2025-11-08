@@ -13,5 +13,5 @@ router.get("/api/test", (ctx) => {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-console.log("Backend läuft auf http://localhost:8000");
+console.log("Backend läuft auf http://localhost:8000, test unter http://localhost:8000/api/test");
 await app.listen({ port: 8000 });
