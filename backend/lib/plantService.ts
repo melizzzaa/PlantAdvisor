@@ -38,22 +38,22 @@ export async function createPlant(input: Partial<Plant>): Promise<Plant> {
   validate(input);
   const store = await db.loadDb();
 
-  const newPlant: Plant = {
-    id: makeId(),
-    name: input.name!,
-    soilType: input.soilType!,
-    sunlight: input.sunlight!,
-    plantType: input.plantType ?? "",
-    careLevel: input.careLevel ?? "medium",
-    waterRequirement: input.waterRequirement ?? "medium",
-    frostResistance: input.frostResistance ?? "medium",
-    climateZone: input.climateZone ?? "temperate",
-    waterAvailability: input.waterAvailability ?? "medium",
-    temperatureRange: input.temperatureRange ?? "",
-    soilPH: input.soilPH ?? "neutral",
-    space: input.space ?? "garden",
-    harvestSeason: input.harvestSeason ?? "summer",
-  };
+const newPlant: Plant = {
+  id: makeId(),
+  name: input.name!,
+  soilType: input.soilType!,
+  sunlight: input.sunlight!,
+  climateZone: input.climateZone ?? "temperate",
+  waterAvailability: input.waterAvailability ?? "medium",
+  temperatureRange: input.temperatureRange ?? "10-25°C",
+  soilPH: input.soilPH ?? "neutral",
+  plantType: input.plantType ?? "herb",
+  careLevel: input.careLevel ?? "medium",
+  waterRequirement: input.waterRequirement ?? "medium",
+  frostResistance: input.frostResistance ?? "medium",
+  space: input.space ?? "garden",
+  harvestSeason: input.harvestSeason ?? "summer",
+};
 
   store.plants.push(newPlant);
   await db.saveDb(store);
