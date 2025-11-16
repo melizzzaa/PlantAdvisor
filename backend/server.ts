@@ -21,6 +21,12 @@ router.post("/api/plants", async (ctx) => {
     const body = ctx.request.body({ type: "json" });
     const input = await body.value;
 
+    if (typeof input !== "object" || input === null) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "Ungültiger Request-Body" };
+      return;
+    }
+
     const newPlant = await createPlant(input);
 
     ctx.response.status = 201;
@@ -31,7 +37,7 @@ router.post("/api/plants", async (ctx) => {
     if (err instanceof Error) {
       ctx.response.body = { error: err.message };
     } else {
-      ctx.response.body = { error: "Error occurred" };
+      ctx.response.body = { error: "Unbekannter Fehler" };
     }
   }
 });
@@ -56,13 +62,26 @@ router.put("/api/plants/:id", async (ctx) => {
   const body = ctx.request.body({ type: "json" });
   const input = await body.value;
 
+  if (typeof input !== "object" || input === null) {
+    ctx.response.status = 400;
+    ctx.response.body = { error: "Ungültiger Request-Body" };
+    return;
+  }
+
+  if (Object.keys(input).length === 0) {
+    ctx.response.status = 400;
+    ctx.response.body = { error: "Keine Daten zum Aktualisieren vorhanden" };
+    return;
+  }
+
   const updated = await updatePlant(id, input);
 
   if (!updated) {
     ctx.response.status = 404;
-    ctx.response.body = { error: "Plant not found" };
+    ctx.response.body = { error: "Plant nicht gefunden" };
     return;
   }
+
   ctx.response.status = 200;
   ctx.response.body = updated;
 });
