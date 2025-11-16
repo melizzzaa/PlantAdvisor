@@ -68,15 +68,38 @@ export async function updatePlant(id: string, input: Partial<Plant>): Promise<Pl
   if (!plant) {
     return null;
   }
-  plant.name = input.name ?? plant.name;
-  plant.plantType = input.plantType ?? plant.plantType;
-  plant.soilType = input.soilType ?? plant.soilType;
-  plant.sunlight = input.sunlight ?? plant.sunlight;
-  plant.space = input.space ?? plant.space;
 
-  plant.climateZone = input.climateZone ?? plant.climateZone;
-  plant.waterRequirement = input.waterRequirement ?? plant.waterRequirement;
-  plant.harvestSeason = input.harvestSeason ?? plant.harvestSeason;
+  if (input.name !== undefined) {
+    plant.name = input.name;
+  }
+
+  if (input.plantType !== undefined) {
+    plant.plantType = input.plantType;
+  }
+
+  if (input.soilType !== undefined) {
+    plant.soilType = input.soilType;
+  }
+
+  if (input.sunlight !== undefined) {
+    plant.sunlight = input.sunlight;
+  }
+
+  if (input.space !== undefined) {
+    plant.space = input.space;
+  }
+
+  if (input.climateZone !== undefined) {
+    plant.climateZone = input.climateZone;
+  }
+
+  if (input.waterRequirement !== undefined) {
+    plant.waterRequirement = input.waterRequirement;
+  }
+
+  if (input.harvestSeason !== undefined) {
+    plant.harvestSeason = input.harvestSeason;
+  }
 
   await db.saveDb(store);
   return plant;
