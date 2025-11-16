@@ -21,7 +21,6 @@ function validate(input: Partial<Plant>) {
   }
 }
 
-
 export async function listPlants(): Promise<Plant[]> {
   const store = await db.loadDb();
   return store.plants as unknown as Plant[];
