@@ -1,5 +1,5 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { listPlants} from "./lib/plantService.ts";
+import { listPlants, createPlant, deletePlant, updatePlant} from "./lib/plantService.ts";
 
 const app = new Application();
 const router = new Router();
@@ -14,6 +14,26 @@ router.get("/api/test", (ctx) => {
 router.get("/api/plants", async (ctx) => {
   const plants = await listPlants();
   ctx.response.body = plants;
+});
+
+router.post("/api/plants", async (ctx) => {
+  try {
+    const body = ctx.request.body({ type: "json" });
+    const input = await body.value;
+
+    const newPlant = await createPlant(input);
+
+    ctx.response.status = 201;
+    ctx.response.body = newPlant;
+  } catch (err) {
+    ctx.response.status = 400;
+
+    if (err instanceof Error) {
+      ctx.response.body = { error: err.message };
+    } else {
+      ctx.response.body = { error: "Unknown error occurred" };
+    }
+  }
 });
 
 
