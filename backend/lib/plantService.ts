@@ -61,3 +61,24 @@ export async function deletePlant(id: string): Promise<boolean> {
   return true;
 }
 
+export async function updatePlant(id: string, input: Partial<Plant>): Promise<Plant | null> {
+  const store = await db.loadDb();
+  const plant = store.plants.find((p) => p.id === id);
+
+  if (!plant) {
+    return null;
+  }
+  plant.name = input.name ?? plant.name;
+  plant.plantType = input.plantType ?? plant.plantType;
+  plant.soilType = input.soilType ?? plant.soilType;
+  plant.sunlight = input.sunlight ?? plant.sunlight;
+  plant.space = input.space ?? plant.space;
+
+  plant.climateZone = input.climateZone ?? plant.climateZone;
+  plant.waterRequirement = input.waterRequirement ?? plant.waterRequirement;
+  plant.harvestSeason = input.harvestSeason ?? plant.harvestSeason;
+
+  await db.saveDb(store);
+  return plant;
+}
+
