@@ -1,5 +1,5 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { listPlants, createPlant, deletePlant, updatePlant} from "./lib/plantService.ts";
+import { listPlants, createPlant, deletePlant, updatePlant} from "../lib/plantService.ts";
 
 const app = new Application();
 const router = new Router();
