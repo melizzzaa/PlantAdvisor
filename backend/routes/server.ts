@@ -1,7 +1,23 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { listPlants, createPlant, deletePlant, updatePlant} from "../lib/plantService.ts";
 
+
 const app = new Application();
+
+app.use((ctx, next) => {
+  ctx.response.headers.set("Access-Control-Allow-Origin", "*");
+  ctx.response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  ctx.response.headers.set("Access-Control-Allow-Headers", "Content-Type");
+
+  if (ctx.request.method === "OPTIONS") {
+    ctx.response.status = 204;
+    return;
+  }
+
+  return next();
+});
+
+
 const router = new Router();
 
 router.get("/api/test", (ctx) => {
