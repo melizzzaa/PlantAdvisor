@@ -87,6 +87,35 @@ router.put("/api/plants/:id", async (ctx) => {
 });
 
 
+router.get("/api/recommend", async (ctx) => {
+  const query = ctx.request.url.searchParams;
+
+  const plantType = query.get("plantType");
+  const soilType = query.get("soilType");
+  const sunlight = query.get("sunlight");
+  const space = query.get("space");
+  const climateZone = query.get("climateZone");
+  const waterRequirement = query.get("waterRequirement");
+  const harvestSeason = query.get("harvestSeason");
+
+  const plants = await listPlants();
+
+  const result = plants.filter((p) => {
+    return (
+      (!plantType || p.plantType === plantType) &&
+      (!soilType || p.soilType === soilType) &&
+      (!sunlight || p.sunlight === sunlight) &&
+      (!space || p.space === space) &&
+      (!climateZone || p.climateZone === climateZone) &&
+      (!waterRequirement || p.waterRequirement === waterRequirement) &&
+      (!harvestSeason || p.harvestSeason === harvestSeason)
+    );
+  });
+
+  ctx.response.body = result;
+});
+
+
 app.use(router.routes());
 app.use(router.allowedMethods());
 
