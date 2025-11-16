@@ -31,7 +31,7 @@ router.post("/api/plants", async (ctx) => {
     if (err instanceof Error) {
       ctx.response.body = { error: err.message };
     } else {
-      ctx.response.body = { error: "Unknown error occurred" };
+      ctx.response.body = { error: "Error occurred" };
     }
   }
 });
@@ -47,15 +47,31 @@ router.delete("/api/plants/:id", async (ctx) => {
     return;
   }
 
-  ctx.response.status = 204; // No Content
+  ctx.response.status = 204;
 });
 
+router.put("/api/plants/:id", async (ctx) => {
+  const id = ctx.params.id!;
+
+  const body = ctx.request.body({ type: "json" });
+  const input = await body.value;
+
+  const updated = await updatePlant(id, input);
+
+  if (!updated) {
+    ctx.response.status = 404;
+    ctx.response.body = { error: "Plant not found" };
+    return;
+  }
+  ctx.response.status = 200;
+  ctx.response.body = updated;
+});
 
 
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-console.log("SERVER: richtige Datei läuft!");
+console.log("Richtige Datei läuft");
 console.log("Backend läuft auf http://localhost:8000, test unter http://localhost:8000/api/test");
 await app.listen({ port: 8000 });
 
