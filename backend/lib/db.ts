@@ -1,9 +1,9 @@
+import { Plant } from "../models/plant.ts";
+
 const DB_PATH = "./data/db.json";
 
-type Plant = Record<string, unknown>;
-
 type DbShape = {
-  plants: Array<Plant>;
+  plants: Plant[];
 };
 
 async function loadDb(): Promise<DbShape> {
@@ -11,7 +11,6 @@ async function loadDb(): Promise<DbShape> {
     const text = await Deno.readTextFile(DB_PATH);
     return JSON.parse(text) as DbShape;
   } catch {
-    // Fallback, falls Datei (noch) leer ist
     return { plants: [] };
   }
 }
@@ -22,3 +21,8 @@ async function saveDb(db: DbShape): Promise<void> {
 }
 
 export const db = { loadDb, saveDb };
+
+
+
+
+
