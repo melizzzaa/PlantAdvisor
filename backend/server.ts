@@ -36,6 +36,21 @@ router.post("/api/plants", async (ctx) => {
   }
 });
 
+router.delete("/api/plants/:id", async (ctx) => {
+  const id = ctx.params.id!;
+
+  const deleted = await deletePlant(id);
+
+  if (!deleted) {
+    ctx.response.status = 404;
+    ctx.response.body = { error: "Plant not found" };
+    return;
+  }
+
+  ctx.response.status = 204; // No Content
+});
+
+
 
 app.use(router.routes());
 app.use(router.allowedMethods());
