@@ -48,3 +48,16 @@ export async function createPlant(input: Partial<Plant>): Promise<Plant> {
   return newPlant;
 }
 
+export async function deletePlant(id: string): Promise<boolean> {
+  const store = await db.loadDb();
+  const index = store.plants.findIndex((p) => p.id === id);
+
+  if (index === -1) {
+    return false;
+  }
+
+  store.plants.splice(index, 1);
+  await db.saveDb(store);
+  return true;
+}
+
