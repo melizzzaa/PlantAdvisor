@@ -6,28 +6,21 @@ function makeId() {
 }
 
 function validate(input: Partial<Plant>) {
-  const required = [
+  const requiredFields = [
     "name",
+    "plantType",
     "soilType",
     "sunlight",
-    "climateZone",
-    "waterAvailability",
-    "temperatureRange",
-    "soilPH",
-    "plantType",
-    "careLevel",
-    "waterRequirement",
-    "frostResistance",
     "space",
-    "harvestSeason",
   ] as const;
 
-  for (const key of required) {
-    if (!input[key] || input[key] === "") {
-      throw new Error(`Field '${key}' is required`);
+  for (const field of requiredFields) {
+    if (!input[field] || input[field] === "") {
+      throw new Error(`Missing required field: '${field}'`);
     }
   }
 }
+
 
 export async function listPlants(): Promise<Plant[]> {
   const store = await db.loadDb();
