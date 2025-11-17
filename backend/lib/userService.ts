@@ -15,3 +15,24 @@ export async function listUsers(): Promise<User[]> {
   const store = await db.loadDb();
   return store.users as User[];
 }
+
+export async function createUser(username: string, password: string): Promise<User> {
+  const store = await db.loadDb();
+
+  const exists = store.users.find((u) => u.username === username);
+  if (exists) {
+    throw new Error("Benutzer existiert bereits");
+  }
+
+  const newUser: User = {
+    id: makeUserId(),
+    username,
+    password,  
+    favorites: []
+  };
+
+  store.users.push(newUser);
+  await db.saveDb(store);
+
+  return newUser;
+}
