@@ -45,6 +45,50 @@ async function createToken(payload: object): Promise<string> {
   return `${encHeader}.${encPayload}.${encSignature}`;
 }
 
+export async function validateToken(token: string) {
+  const parts = token.split(".");
+  if (parts.length !== 3) {
+    throw new Error("Ungültiger Token");
+  }
+
+  const [encHeader, encPayload, encSignature] = parts;
+
+  const text = `${encHeader}.${encPayload}`;
+
+  const keyData = new TextEncoder().encode(SECRET_KEY);
+  const algorithm = { name: "HMAC", hash: "SHA-256" };
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "raw",
+    keyData,
+    algorithm,
+    false,
+    ["verify"]
+  );
+
+  const signatureBytes = Uint8Array.from(
+    atob(encSignature.replace(/-/g, "+").replace(/_/g, "/")),
+    (c) => c.charCodeAt(0)
+  );
+
+  const isValid = await crypto.subtle.verify(
+    "HMAC",
+    cryptoKey,
+    signatureBytes,
+    new TextEncoder().encode(text)
+  );
+
+  if (!isValid) {
+    throw new Error("Token ungültig");
+  }
+
+  const payloadJson = atob(
+    encPayload.replace(/-/g, "+").replace(/_/g, "/")
+  );
+  return JSON.parse(payloadJson);
+}
+
+
 export async function login(username: string, password: string) {
   const user = await findUserByUsername(username);
   if (!user) {
