@@ -1,9 +1,11 @@
 import { Plant } from "../models/plant.ts";
+import type { User } from "./userService.ts";
 
 const DB_PATH = "./data/db.json";
 
 type DbShape = {
   plants: Plant[];
+  users: User[]; 
 };
 
 async function loadDb(): Promise<DbShape> {
@@ -11,7 +13,7 @@ async function loadDb(): Promise<DbShape> {
     const text = await Deno.readTextFile(DB_PATH);
     return JSON.parse(text) as DbShape;
   } catch {
-    return { plants: [] };
+    return { plants: [], users: [] };
   }
 }
 
@@ -21,3 +23,4 @@ async function saveDb(db: DbShape): Promise<void> {
 }
 
 export const db = { loadDb, saveDb };
+
