@@ -10,6 +10,13 @@ export interface User {
 function makeUserId() {
   return crypto.randomUUID?.() ?? `u-${Date.now()}`;
 }
+
+async function hashPassword(password: string): Promise<string> {
+  const data = new TextEncoder().encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
  
 export async function listUsers(): Promise<User[]> {
   const store = await db.loadDb();
@@ -32,7 +39,7 @@ export async function createUser(username: string, password: string): Promise<Us
   const newUser: User = {
     id: makeUserId(),
     username,
-    password,  
+    password: await hashPassword(password),
     favorites: []
   };
 
