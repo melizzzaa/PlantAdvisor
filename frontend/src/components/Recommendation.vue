@@ -36,8 +36,6 @@ onMounted(() => {
 
 <template>
   <h1>Empfehlungen für dich:</h1>
-  <template>
-  <h1>Empfehlungsbereich</h1>
 
   <h2>Filter</h2>
 
@@ -89,7 +87,13 @@ onMounted(() => {
 
     <button @click="getRecommendations">Vorschläge anzeigen</button>
   </div>
-</template>
+  <h2>Vorgeschlagene Pflanzen:</h2>
+
+<ul>
+  <li v-for="p in results" :key="p.id">
+    {{ p.name }} – {{ p.plantType }} – {{ p.soilType }}
+  </li>
+</ul>
 
 </template>
 
