@@ -332,5 +332,11 @@
     }
   ],
   "users": [
+    {
+      "id": "01e3897c-13a2-42b5-88f8-0469d26d0b8b",
+      "username": "testuser",
+      "password": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+      "favorites": []
+    }
   ]
 }

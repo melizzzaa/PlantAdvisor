@@ -135,7 +135,6 @@ router.get("/api/recommend", async (ctx) => {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-console.log("Richtige Datei läuft");
 console.log("Backend läuft auf http://localhost:8000, test unter http://localhost:8000/api/test");
 await app.listen({ port: 8000 });
 
