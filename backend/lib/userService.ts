@@ -16,6 +16,11 @@ export async function listUsers(): Promise<User[]> {
   return store.users as User[];
 }
 
+export async function findUserByUsername(username: string): Promise<User | undefined> {
+  const store = await db.loadDb();
+  return store.users.find((u) => u.username === username);
+}
+
 export async function createUser(username: string, password: string): Promise<User> {
   const store = await db.loadDb();
 
