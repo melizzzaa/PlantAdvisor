@@ -85,6 +85,40 @@ onMounted(() => {
       </select>
     </label>
 
+    <label>
+      Klimazone:
+      <select v-model="filters.climateZone">
+        <option value="">Alle</option>
+        <option value="tropical">Tropisch</option>
+        <option value="mediterranean">Mittelmeer</option>
+        <option value="temperate">Gemäßigt</option>
+        <option value="cool">Kühl</option>
+        <option value="warm">Warm</option>
+      </select>
+    </label>
+
+    <label>
+      Wasserbedarf:
+      <select v-model="filters.waterRequirement">
+        <option value="">Alle</option>
+        <option value="low">Niedrig</option>
+        <option value="medium">Mittel</option>
+        <option value="high">Hoch</option>
+      </select>
+    </label>
+
+    <label>
+      Erntezeit:
+      <select v-model="filters.harvestSeason">
+        <option value="">Alle</option>
+        <option value="spring">Frühling</option>
+        <option value="summer">Sommer</option>
+        <option value="autumn">Herbst</option>
+        <option value="winter">Winter</option>
+       <option value="all year">Ganzjährig</option>
+      </select>
+    </label>
+
     <button @click="getRecommendations">Vorschläge anzeigen</button>
   </div>
   <h2>Vorgeschlagene Pflanzen:</h2>
@@ -94,6 +128,8 @@ onMounted(() => {
     {{ p.name }} – {{ p.plantType }} – {{ p.soilType }}
   </li>
 </ul>
+
+<p v-if="results.length === 0">Keine passenden Pflanzen gefunden.</p>
 
 </template>
 
