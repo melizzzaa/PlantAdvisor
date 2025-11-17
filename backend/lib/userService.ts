@@ -17,7 +17,16 @@ async function hashPassword(password: string): Promise<string> {
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
 }
- 
+
+export async function validatePassword(
+  inputPassword: string,
+  storedHash: string
+): Promise<boolean> {
+  const inputHash = await hashPassword(inputPassword);
+  return inputHash === storedHash;
+}
+
+
 export async function listUsers(): Promise<User[]> {
   const store = await db.loadDb();
   return store.users as User[];
@@ -39,7 +48,7 @@ export async function createUser(username: string, password: string): Promise<Us
   const newUser: User = {
     id: makeUserId(),
     username,
-    password: await hashPassword(password),
+    password: await hashPassword(password), 
     favorites: []
   };
 
