@@ -10,12 +10,12 @@ async function loginUser() {
 
   try {
     const res = await fetch("http://localhost:8000/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
         username: username.value,
         password: password.value
-      })
+        })
     });
 
     const data = await res.json();

@@ -1,5 +1,7 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { listPlants, createPlant, deletePlant, updatePlant} from "../lib/plantService.ts";
+import { login } from "../lib/authService.ts";
+
 
 
 const app = new Application();
@@ -129,6 +131,26 @@ router.get("/api/recommend", async (ctx) => {
   });
 
   ctx.response.body = result;
+});
+
+router.post("/api/login", async (ctx) => {
+  try {
+    const body = ctx.request.body({ type: "json" });
+    const { username, password } = await body.value;
+
+    const result = await login(username, password);
+
+    ctx.response.status = 200;
+    ctx.response.body = result;
+
+  } catch (err) {
+    ctx.response.status = 401;
+    if (err instanceof Error) {
+      ctx.response.body = { error: err.message };
+    } else {
+      ctx.response.body = { error: "Unbekannter Fehler" };
+    }
+  }
 });
 
 
