@@ -1,15 +1,23 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import Login from "../components/Login.vue";
 import Recommendation from "../components/Recommendation.vue";
 import Favorites from "../views/Favorites.vue";
 
 const routes = [
-  { path: "/login", component: Login },
+  { path: "/", component: Recommendation },
   { 
-    path: "/recommendation",
     component: Recommendation,
+    meta: { requiresAuth: false }
+  },
+
+  {
+    path: "/favorites",
+    component: Favorites,
     meta: { requiresAuth: true }
-  }
+  },
+
+  { path: "/login", component: Login }
 ];
 
 const router = createRouter({
@@ -26,13 +34,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
-const routes = [
-  { path: "/", component: Home },
-  { path: "/recommend", component: Recommendation },
-  { path: "/favorites", component: Favorites },   // <--- NEU
-  { path: "/login", component: Login },
-];
-
 
 export default router;
