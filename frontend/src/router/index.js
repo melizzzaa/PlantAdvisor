@@ -6,10 +6,8 @@ import Favorites from "../views/Favorites.vue";
 
 const routes = [
   { path: "/", component: Recommendation },
-  { 
-    component: Recommendation,
-    meta: { requiresAuth: false }
-  },
+
+  { path: "/recommendation", component: Recommendation },
 
   {
     path: "/favorites",

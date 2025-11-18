@@ -1,9 +1,7 @@
 <template>
   <nav class="nav">
-    <router-link to="/">Home</router-link>
-    <router-link to="/recommend">Empfehlungen</router-link>
+    <router-link to="/">Empfehlungen</router-link>
     <router-link to="/favorites">Favoriten</router-link>
-    <router-link to="/login">Login</router-link>
   </nav>
 </template>
 
