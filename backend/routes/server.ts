@@ -1,6 +1,13 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { listPlants, createPlant, deletePlant, updatePlant} from "../lib/plantService.ts";
 import { login } from "../lib/authService.ts";
+import { requireAuth } from "../lib/authMiddleware.ts";
+import { 
+  listFavoritePlantIds,
+  addFavorite,
+  removeFavorite
+} from "../lib/favoriteService.ts";
+
 
 
 
@@ -131,6 +138,73 @@ router.get("/api/recommend", async (ctx) => {
   });
 
   ctx.response.body = result;
+});
+
+router.get("/api/favorites", requireAuth, async (ctx) => {
+  try {
+    const userId = ctx.state.user as string;
+
+    const plantIds = await listFavoritePlantIds(userId);
+    const plants = await listPlants();
+
+    const favorites = plants.filter((p) => plantIds.includes(p.id));
+
+    ctx.response.status = 200;
+    ctx.response.body = favorites;
+  } catch (err) {
+    ctx.response.status = 500;
+    ctx.response.body = { error: "Fehler beim Laden der Favoriten" };
+  }
+});
+
+router.post("/api/favorites", requireAuth, async (ctx) => {
+  try {
+    const userId = ctx.state.user as string;
+
+    const body = ctx.request.body({ type: "json" });
+    const input = await body.value;
+
+    const plantId = input?.plantId;
+
+    if (!plantId) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "plantId ist erforderlich" };
+      return;
+    }
+
+    await addFavorite(userId, plantId);
+
+    ctx.response.status = 201;
+    ctx.response.body = { success: true };
+  } catch (err) {
+    ctx.response.status = 400;
+    if (err instanceof Error) {
+      ctx.response.body = { error: err.message };
+    } else {
+      ctx.response.body = { error: "Fehler beim Speichern des Favoriten" };
+    }
+  }
+});
+
+router.delete("/api/favorites/:plantId", requireAuth, async (ctx) => {
+  try {
+    const userId = ctx.state.user as string;
+    const plantId = ctx.params.plantId;
+
+    if (!plantId) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "plantId fehlt in der URL" };
+      return;
+    }
+
+    await removeFavorite(userId, plantId);
+
+    ctx.response.status = 204;
+    ctx.response.body = null;
+  } catch (err) {
+    ctx.response.status = 400;
+    ctx.response.body = { error: "Fehler beim Entfernen des Favoriten" };
+  }
 });
 
 router.post("/api/login", async (ctx) => {
