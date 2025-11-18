@@ -38,7 +38,13 @@ router.get("/api/plants", async (ctx) => {
   ctx.response.body = plants;
 });
 
-router.post("/api/plants", async (ctx) => {
+router.post("/api/plants", requireAuth, async (ctx) => {
+  if (!ctx.state.isAdmin) {
+    ctx.response.status = 403;
+    ctx.response.body = { error: "Nur Admins dürfen Pflanzen anlegen." };
+    return;
+  }
+
   try {
     const body = ctx.request.body({ type: "json" });
     const input = await body.value;
@@ -64,9 +70,14 @@ router.post("/api/plants", async (ctx) => {
   }
 });
 
-router.delete("/api/plants/:id", async (ctx) => {
-  const id = ctx.params.id!;
+router.delete("/api/plants/:id", requireAuth, async (ctx) => {
+  if (!ctx.state.isAdmin) {
+    ctx.response.status = 403;
+    ctx.response.body = { error: "Nur Admins dürfen Pflanzen löschen." };
+    return;
+  }
 
+  const id = ctx.params.id!;
   const deleted = await deletePlant(id);
 
   if (!deleted) {
@@ -78,9 +89,14 @@ router.delete("/api/plants/:id", async (ctx) => {
   ctx.response.status = 204;
 });
 
-router.put("/api/plants/:id", async (ctx) => {
-  const id = ctx.params.id!;
+router.put("/api/plants/:id", requireAuth, async (ctx) => {
+  if (!ctx.state.isAdmin) {
+    ctx.response.status = 403;
+    ctx.response.body = { error: "Nur Admins dürfen Pflanzen bearbeiten." };
+    return;
+  }
 
+  const id = ctx.params.id!;
   const body = ctx.request.body({ type: "json" });
   const input = await body.value;
 
