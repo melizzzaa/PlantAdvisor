@@ -3,7 +3,6 @@ import { ref, onMounted } from "vue";
 
 const message = ref("");
 
-
 const filters = ref({
   plantType: "",
   soilType: "",
@@ -31,11 +30,6 @@ async function getRecommendations() {
   );
   results.value = await res.json();
 }
-
-onMounted(() => {
-  getRecommendations();
-
-  const message = ref("");
 
 async function addToFavorites(plantId) {
   message.value = "";
@@ -68,6 +62,9 @@ async function addToFavorites(plantId) {
     message.value = "Fehler beim Speichern des Favoriten.";
   }
 }
+
+onMounted(() => {
+  getRecommendations();
 });
 </script>
 
@@ -152,24 +149,29 @@ async function addToFavorites(plantId) {
         <option value="summer">Sommer</option>
         <option value="autumn">Herbst</option>
         <option value="winter">Winter</option>
-       <option value="all year">Ganzjährig</option>
+        <option value="all year">Ganzjährig</option>
       </select>
     </label>
 
     <button @click="getRecommendations">Vorschläge anzeigen</button>
   </div>
+
   <h2>Vorgeschlagene Pflanzen:</h2>
 
-<ul>
-  <li v-for="p in results" :key="p.id">
-    {{ p.name }} – {{ p.plantType }} – {{ p.soilType }}
-    <button @click="addToFavorites(p.id)">Zu Favoriten</button>
-  </li>
-</ul>
+  <ul>
+    <li v-for="p in results" :key="p.id">
+      {{ p.name }} – {{ p.plantType }} – {{ p.soilType }}
+      <button @click="addToFavorites(p.id)">Zu Favoriten</button>
+    </li>
+  </ul>
 
-<p v-if="message">{{ message }}</p>
+  <p v-if="message">{{ message }}</p>
 
-<p v-if="results.length === 0">Keine passenden Pflanzen gefunden.</p>
+  <p v-if="results.length === 0">Keine passenden Pflanzen gefunden.</p>
+
+<button @click="$router.push('/favorites')" style="margin-bottom: 1rem;">
+  → Zu meinen Favoriten
+</button>
 
 </template>
 

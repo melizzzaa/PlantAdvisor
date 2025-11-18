@@ -42,7 +42,6 @@ async function removeFavorite(plantId) {
     });
 
     if (res.ok) {
-      // lokal aktualisieren
       favorites.value = favorites.value.filter(f => f.id !== plantId);
     } else {
       message.value = "Fehler beim Entfernen.";
@@ -72,6 +71,10 @@ onMounted(() => {
 
     <p v-else-if="!message">Keine Favoriten vorhanden.</p>
   </div>
+  <button @click="$router.push('/')" style="margin-bottom: 1rem;">
+    ← Zurück zu Empfehlungen
+  </button>
+
 </template>
 
 <style scoped>
