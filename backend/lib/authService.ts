@@ -100,6 +100,9 @@ export async function login(username: string, password: string) {
     throw new Error("Falsches Passwort");
   }
 
-  const token = await createToken({ userId: user.id });
+  const token = await createToken({ 
+    userId: user.id, 
+    isAdmin: user.isAdmin
+  });
   return { token };
 }

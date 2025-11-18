@@ -14,6 +14,8 @@ export async function requireAuth(ctx: any, next: any) {
   try {
     const payload = await validateToken(token);
     ctx.state.user = payload.userId;
+    ctx.state.isAdmin = payload.isAdmin; 
+    
     await next();
   } catch (err) {
     ctx.response.status = 401;

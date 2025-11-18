@@ -5,6 +5,7 @@ export interface User {
   username: string;
   password: string;
   favorites: string[];
+  isAdmin: boolean; 
 }
 
 function makeUserId() {
@@ -49,7 +50,8 @@ export async function createUser(username: string, password: string): Promise<Us
     id: makeUserId(),
     username,
     password: await hashPassword(password), 
-    favorites: []
+    favorites: [],
+    isAdmin: false
   };
 
   store.users.push(newUser);
