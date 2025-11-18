@@ -1,5 +1,6 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { listPlants, createPlant, deletePlant, updatePlant} from "../lib/plantService.ts";
+import { createUser } from "../lib/userService.ts";
+import { listPlants, createPlant, deletePlant, updatePlant } from "../lib/plantService.ts";
 import { login } from "../lib/authService.ts";
 import { requireAuth } from "../lib/authMiddleware.ts";
 import { 
@@ -7,7 +8,6 @@ import {
   addFavorite,
   removeFavorite
 } from "../lib/favoriteService.ts";
-import { createUser } from "../lib/userService.ts";
 
 const app = new Application();
 
@@ -24,7 +24,6 @@ app.use((ctx, next) => {
   return next();
 });
 
-
 const router = new Router();
 
 router.get("/api/test", (ctx) => {
@@ -33,6 +32,52 @@ router.get("/api/test", (ctx) => {
     time: new Date().toISOString(),
   };
 });
+
+router.post("/api/login", async (ctx) => {
+  try {
+    const body = ctx.request.body({ type: "json" });
+    const { username, password } = await body.value;
+
+    const result = await login(username, password);
+
+    ctx.response.status = 200;
+    ctx.response.body = result;
+
+  } catch (err) {
+    ctx.response.status = 401;
+    ctx.response.body = { 
+      error: err instanceof Error ? err.message : String(err)
+    };
+  }
+});
+
+router.post("/api/register", async (ctx) => {
+  try {
+    const body = ctx.request.body({ type: "json" });
+    const { username, password } = await body.value;
+
+    if (!username || !password) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "Benutzername und Passwort erforderlich" };
+      return;
+    }
+
+    const newUser = await createUser(username, password);
+
+    ctx.response.status = 201;
+    ctx.response.body = { 
+      message: "Nutzer erstellt",
+      userId: newUser.id 
+    };
+
+  } catch (err) {
+    ctx.response.status = 400;
+    ctx.response.body = { 
+      error: err instanceof Error ? err.message : String(err)
+    };
+  }
+});
+
 
 router.get("/api/plants", async (ctx) => {
   const plants = await listPlants();
@@ -50,24 +95,15 @@ router.post("/api/plants", requireAuth, async (ctx) => {
     const body = ctx.request.body({ type: "json" });
     const input = await body.value;
 
-    if (typeof input !== "object" || input === null) {
-      ctx.response.status = 400;
-      ctx.response.body = { error: "Ungültiger Request-Body" };
-      return;
-    }
-
     const newPlant = await createPlant(input);
 
     ctx.response.status = 201;
     ctx.response.body = newPlant;
   } catch (err) {
     ctx.response.status = 400;
-
-    if (err instanceof Error) {
-      ctx.response.body = { error: err.message };
-    } else {
-      ctx.response.body = { error: "Unbekannter Fehler" };
-    }
+    ctx.response.body = { 
+      error: err instanceof Error ? err.message : String(err)
+    };
   }
 });
 
@@ -101,18 +137,6 @@ router.put("/api/plants/:id", requireAuth, async (ctx) => {
   const body = ctx.request.body({ type: "json" });
   const input = await body.value;
 
-  if (typeof input !== "object" || input === null) {
-    ctx.response.status = 400;
-    ctx.response.body = { error: "Ungültiger Request-Body" };
-    return;
-  }
-
-  if (Object.keys(input).length === 0) {
-    ctx.response.status = 400;
-    ctx.response.body = { error: "Keine Daten zum Aktualisieren vorhanden" };
-    return;
-  }
-
   const updated = await updatePlant(id, input);
 
   if (!updated) {
@@ -125,29 +149,19 @@ router.put("/api/plants/:id", requireAuth, async (ctx) => {
   ctx.response.body = updated;
 });
 
-
 router.get("/api/recommend", async (ctx) => {
   const query = ctx.request.url.searchParams;
-
-  const plantType = query.get("plantType");
-  const soilType = query.get("soilType");
-  const sunlight = query.get("sunlight");
-  const space = query.get("space");
-  const climateZone = query.get("climateZone");
-  const waterRequirement = query.get("waterRequirement");
-  const harvestSeason = query.get("harvestSeason");
-
   const plants = await listPlants();
 
   const result = plants.filter((p) => {
     return (
-      (!plantType || p.plantType === plantType) &&
-      (!soilType || p.soilType === soilType) &&
-      (!sunlight || p.sunlight === sunlight) &&
-      (!space || p.space === space) &&
-      (!climateZone || p.climateZone === climateZone) &&
-      (!waterRequirement || p.waterRequirement === waterRequirement) &&
-      (!harvestSeason || p.harvestSeason === harvestSeason)
+      (!query.get("plantType") || p.plantType === query.get("plantType")) &&
+      (!query.get("soilType") || p.soilType === query.get("soilType")) &&
+      (!query.get("sunlight") || p.sunlight === query.get("sunlight")) &&
+      (!query.get("space") || p.space === query.get("space")) &&
+      (!query.get("climateZone") || p.climateZone === query.get("climateZone")) &&
+      (!query.get("waterRequirement") || p.waterRequirement === query.get("waterRequirement")) &&
+      (!query.get("harvestSeason") || p.harvestSeason === query.get("harvestSeason"))
     );
   });
 
@@ -156,15 +170,12 @@ router.get("/api/recommend", async (ctx) => {
 
 router.get("/api/favorites", requireAuth, async (ctx) => {
   try {
-    const userId = ctx.state.user as string;
-
+    const userId = ctx.state.user;
     const plantIds = await listFavoritePlantIds(userId);
     const plants = await listPlants();
 
-    const favorites = plants.filter((p) => plantIds.includes(p.id));
+    ctx.response.body = plants.filter((p) => plantIds.includes(p.id));
 
-    ctx.response.status = 200;
-    ctx.response.body = favorites;
   } catch (err) {
     ctx.response.status = 500;
     ctx.response.body = { error: "Fehler beim Laden der Favoriten" };
@@ -173,103 +184,40 @@ router.get("/api/favorites", requireAuth, async (ctx) => {
 
 router.post("/api/favorites", requireAuth, async (ctx) => {
   try {
-    const userId = ctx.state.user as string;
-
+    const userId = ctx.state.user;
     const body = ctx.request.body({ type: "json" });
     const input = await body.value;
 
-    const plantId = input?.plantId;
-
-    if (!plantId) {
-      ctx.response.status = 400;
-      ctx.response.body = { error: "plantId ist erforderlich" };
-      return;
-    }
-
-    await addFavorite(userId, plantId);
+    await addFavorite(userId, input.plantId);
 
     ctx.response.status = 201;
     ctx.response.body = { success: true };
+
   } catch (err) {
     ctx.response.status = 400;
-    if (err instanceof Error) {
-      ctx.response.body = { error: err.message };
-    } else {
-      ctx.response.body = { error: "Fehler beim Speichern des Favoriten" };
-    }
+    ctx.response.body = { 
+      error: err instanceof Error ? err.message : String(err)
+    };
   }
 });
 
 router.delete("/api/favorites/:plantId", requireAuth, async (ctx) => {
   try {
-    const userId = ctx.state.user as string;
+    const userId = ctx.state.user;
     const plantId = ctx.params.plantId;
-
-    if (!plantId) {
-      ctx.response.status = 400;
-      ctx.response.body = { error: "plantId fehlt in der URL" };
-      return;
-    }
 
     await removeFavorite(userId, plantId);
 
     ctx.response.status = 204;
-    ctx.response.body = null;
+
   } catch (err) {
     ctx.response.status = 400;
     ctx.response.body = { error: "Fehler beim Entfernen des Favoriten" };
   }
 });
 
-router.post("/api/login", async (ctx) => {
-  try {
-    const body = ctx.request.body({ type: "json" });
-    const { username, password } = await body.value;
-
-    const result = await login(username, password);
-
-    ctx.response.status = 200;
-    ctx.response.body = result;
-
-  } catch (err) {
-    ctx.response.status = 401;
-    if (err instanceof Error) {
-      ctx.response.body = { error: err.message };
-    } else {
-      ctx.response.body = { error: "Unbekannter Fehler" };
-    }
-  }
-
-router.post("/api/register", async (ctx) => {
-  try {
-    const body = ctx.request.body({ type: "json" });
-    const { username, password } = await body.value;
-
-    if (!username || !password) {
-      ctx.response.status = 400;
-      ctx.response.body = { error: "Benutzername und Passwort erforderlich" };
-      return;
-    }
-
-    const newUser = await createUser(username, password);
-
-    ctx.response.status = 201;
-    ctx.response.body = { 
-      message: "Nutzer erstellt",
-      userId: newUser.id 
-    };
-
-} catch (err) {
-  ctx.response.status = 400;
-  ctx.response.body = { 
-    error: err instanceof Error ? err.message : String(err)
-  };
-}});
-});
-
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-console.log("Backend läuft auf http://localhost:8000, test unter http://localhost:8000/api/test");
+console.log("Backend läuft auf http://localhost:8000/api/test");
 await app.listen({ port: 8000 });
-
