@@ -352,6 +352,13 @@
       "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
       "favorites": [],
       "isAdmin": false
+    },
+    {
+      "id": "40d57cdd-ef13-4b8e-9ac9-50a3b34747df",
+      "username": "carla",
+      "password": "6b51d431df5d7f141cbececcf79edf3dd861c3b4069f0b11661a3eefacbba918",
+      "favorites": [],
+      "isAdmin": false
     }
   ]
 }

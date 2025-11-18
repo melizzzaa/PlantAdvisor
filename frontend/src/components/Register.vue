@@ -28,10 +28,10 @@ async function registerUser() {
       return;
     }
 
-    message.value = "Registrierung erfolgreich! Bitte einloggen.";
+    window.location.href = "/login";
 
   } catch (err) {
-    message.value = "Verbindungsfehler.";
+    message.value = "Fehler bei der Registrierung.";
   }
 }
 </script>
