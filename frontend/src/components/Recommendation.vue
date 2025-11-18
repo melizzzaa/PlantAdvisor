@@ -31,6 +31,40 @@ async function getRecommendations() {
 
 onMounted(() => {
   getRecommendations();
+
+  const message = ref("");
+
+async function addToFavorites(plantId) {
+  message.value = "";
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    message.value = "Bitte zuerst einloggen, um Favoriten zu speichern.";
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:8000/api/favorites", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ plantId })
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      message.value = data.error || "Konnte Favorit nicht speichern.";
+      return;
+    }
+
+    message.value = "Favorit gespeichert.";
+  } catch (err) {
+    message.value = "Fehler beim Speichern des Favoriten.";
+  }
+}
 });
 </script>
 
@@ -126,8 +160,11 @@ onMounted(() => {
 <ul>
   <li v-for="p in results" :key="p.id">
     {{ p.name }} – {{ p.plantType }} – {{ p.soilType }}
+    <button @click="addToFavorites(p.id)">Zu Favoriten</button>
   </li>
 </ul>
+
+<p v-if="message">{{ message }}</p>
 
 <p v-if="results.length === 0">Keine passenden Pflanzen gefunden.</p>
 
