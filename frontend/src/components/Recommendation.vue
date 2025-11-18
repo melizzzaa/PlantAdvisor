@@ -1,6 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
+const message = ref("");
+
+
 const filters = ref({
   plantType: "",
   soilType: "",

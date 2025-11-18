@@ -8,15 +8,12 @@ import {
   removeFavorite
 } from "../lib/favoriteService.ts";
 
-
-
-
 const app = new Application();
 
 app.use((ctx, next) => {
   ctx.response.headers.set("Access-Control-Allow-Origin", "*");
   ctx.response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  ctx.response.headers.set("Access-Control-Allow-Headers", "Content-Type");
+  ctx.response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
   if (ctx.request.method === "OPTIONS") {
     ctx.response.status = 204;
