@@ -79,6 +79,7 @@ router.post("/api/register", async (ctx) => {
 });
 
 
+
 router.get("/api/plants", async (ctx) => {
   const plants = await listPlants();
   ctx.response.body = plants;
