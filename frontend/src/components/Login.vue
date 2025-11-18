@@ -1,9 +1,12 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const username = ref("");
 const password = ref("");
 const message = ref("");
+
+const router = useRouter();
 
 async function loginUser() {
   message.value = "";
@@ -27,13 +30,43 @@ async function loginUser() {
 
     localStorage.setItem("token", data.token);
 
-    window.location.href = "/recommendation";
+    router.push("/recommendation");
 
   } catch (err) {
     message.value = "Fehler beim Login";
   }
 }
+
+function goToRegister() {
+  router.push("/register");
+}
 </script>
+
+<template>
+  <h1>Login</h1>
+
+  <div class="login-container">
+    <label>
+      Benutzername:
+      <input v-model="username" />
+    </label>
+
+    <label>
+      Passwort:
+      <input type="password" v-model="password" />
+    </label>
+
+    <button @click="loginUser">Einloggen</button>
+
+    <div style="margin-top: 1rem;">
+      <p>Noch keinen Account?</p>
+      <button @click="goToRegister">Registrieren</button>
+    </div>
+
+    <p>{{ message }}</p>
+  </div>
+</template>
+
 
 <template>
   <h1>Login</h1>

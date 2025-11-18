@@ -7,6 +7,7 @@ import {
   addFavorite,
   removeFavorite
 } from "../lib/favoriteService.ts";
+import { createUser } from "../lib/userService.ts";
 
 const app = new Application();
 
@@ -238,8 +239,33 @@ router.post("/api/login", async (ctx) => {
       ctx.response.body = { error: "Unbekannter Fehler" };
     }
   }
-});
 
+router.post("/api/register", async (ctx) => {
+  try {
+    const body = ctx.request.body({ type: "json" });
+    const { username, password } = await body.value;
+
+    if (!username || !password) {
+      ctx.response.status = 400;
+      ctx.response.body = { error: "Benutzername und Passwort erforderlich" };
+      return;
+    }
+
+    const newUser = await createUser(username, password);
+
+    ctx.response.status = 201;
+    ctx.response.body = { 
+      message: "Nutzer erstellt",
+      userId: newUser.id 
+    };
+
+} catch (err) {
+  ctx.response.status = 400;
+  ctx.response.body = { 
+    error: err instanceof Error ? err.message : String(err)
+  };
+}});
+});
 
 app.use(router.routes());
 app.use(router.allowedMethods());
