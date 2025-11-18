@@ -5,9 +5,17 @@ import Recommendation from "../components/Recommendation.vue";
 import Favorites from "../views/Favorites.vue";
 
 const routes = [
-  { path: "/", component: Recommendation },
+  { 
+    path: "/", 
+    component: Recommendation,
+    meta: { requiresAuth: true }
+  },
 
-  { path: "/recommendation", component: Recommendation },
+  { 
+    path: "/recommendation",
+    component: Recommendation,
+    meta: { requiresAuth: true }
+  },
 
   {
     path: "/favorites",
@@ -15,8 +23,18 @@ const routes = [
     meta: { requiresAuth: true }
   },
 
-  { path: "/login", component: Login }
+  { 
+    path: "/admin",
+    component: Admin,
+    meta: { requiresAuth: true }
+  },
+
+  { 
+    path: "/login", 
+    component: Login 
+  }
 ];
+
 
 const router = createRouter({
   history: createWebHistory(),
