@@ -31,6 +31,10 @@ async function loginUser() {
   } catch (err) {
     message.value = "Fehler beim Login";
   }
+
+  localStorage.setItem("token", data.token);
+  window.location.href = "/";
+
 }
 </script>
 
