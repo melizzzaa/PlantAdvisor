@@ -67,26 +67,5 @@ function goToRegister() {
   </div>
 </template>
 
-
-<template>
-  <h1>Login</h1>
-
-  <div class="login-container">
-    <label>
-      Benutzername:
-      <input v-model="username" />
-    </label>
-
-    <label>
-      Passwort:
-      <input type="password" v-model="password" />
-    </label>
-
-    <button @click="loginUser">Einloggen</button>
-
-    <p>{{ message }}</p>
-  </div>
-</template>
-
 <style>
 </style>

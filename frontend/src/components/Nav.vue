@@ -2,20 +2,22 @@
 import { ref } from "vue";
 
 const token = localStorage.getItem("token");
-let user = null;
+
+const user = ref(null);
 
 if (token) {
   try {
-    user = JSON.parse(
+    user.value = JSON.parse(
       atob(
         token.split(".")[1]
-        .replace(/-/g, "+")
-        .replace(/_/g, "/")
+          .replace(/-/g, "+")
+          .replace(/_/g, "/")
       )
     );
-  } catch {}
+  } catch (e) {
+    user.value = null;
+  }
 }
-
 function logout() {
   localStorage.removeItem("token");
   window.location.href = "/login";
@@ -24,12 +26,16 @@ function logout() {
 
 <template>
   <nav class="nav">
+
     <router-link to="/">Empfehlungen</router-link>
     <router-link to="/favorites">Favoriten</router-link>
+
     <router-link v-if="user?.isAdmin" to="/admin">Admin</router-link>
 
     <button v-if="user" @click="logout">Logout</button>
+
     <router-link v-else to="/login">Login</router-link>
+
   </nav>
 </template>
 
