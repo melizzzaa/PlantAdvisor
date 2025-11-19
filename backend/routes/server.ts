@@ -79,7 +79,6 @@ router.post("/api/register", async (ctx) => {
 });
 
 
-
 router.get("/api/plants", async (ctx) => {
   const plants = await listPlants();
   ctx.response.body = plants;
@@ -159,7 +158,6 @@ router.get("/api/recommend", async (ctx) => {
       (!query.get("plantType") || p.plantType === query.get("plantType")) &&
       (!query.get("soilType") || p.soilType === query.get("soilType")) &&
       (!query.get("sunlight") || p.sunlight === query.get("sunlight")) &&
-      (!query.get("space") || p.space === query.get("space")) &&
       (!query.get("climateZone") || p.climateZone === query.get("climateZone")) &&
       (!query.get("waterRequirement") || p.waterRequirement === query.get("waterRequirement")) &&
       (!query.get("harvestSeason") || p.harvestSeason === query.get("harvestSeason"))

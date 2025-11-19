@@ -7,7 +7,6 @@ const filters = ref({
   plantType: "",
   soilType: "",
   sunlight: "",
-  space: "",
   climateZone: "",
   waterRequirement: "",
   harvestSeason: ""
@@ -109,27 +108,15 @@ onMounted(() => {
     </label>
 
     <label>
-      Standort:
-      <select v-model="filters.space">
-        <option value="">Alle</option>
-        <option value="garden">Garten</option>
-        <option value="balcony">Balkon</option>
-        <option value="field">Feld</option>
-        <option value="indoor">Innenraum</option>
-      </select>
-    </label>
-
-    <label>
       Klimazone:
       <select v-model="filters.climateZone">
         <option value="">Alle</option>
         <option value="tropical">Tropisch</option>
-        <option value="mediterranean">Mittelmeer</option>
+        <option value="subtropical">Subtropisch</option>
         <option value="temperate">Gemäßigt</option>
-        <option value="cool">Kühl</option>
-        <option value="warm">Warm</option>
       </select>
     </label>
+
 
     <label>
       Wasserbedarf:
