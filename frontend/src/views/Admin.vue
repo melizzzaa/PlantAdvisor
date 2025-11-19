@@ -9,7 +9,6 @@ const newPlant = ref({
   plantType: "",
   soilType: "",
   sunlight: "",
-  space: "",
   climateZone: "",
   waterRequirement: "",
   harvestSeason: ""
@@ -23,13 +22,22 @@ async function loadPlants() {
 async function createPlant() {
   const token = localStorage.getItem("token");
 
+  console.log("newPlant vor dem Clean:", newPlant.value);
+
+  const payload = {};
+  for (const key in newPlant.value) {
+    if (newPlant.value[key] !== "") {
+      payload[key] = newPlant.value[key];
+    }
+  }
+
   const res = await fetch("http://localhost:8000/api/plants", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + token
     },
-    body: JSON.stringify(newPlant.value)
+    body: JSON.stringify(payload)
   });
 
   if (!res.ok) {
@@ -66,16 +74,63 @@ onMounted(loadPlants);
     <h2>Neue Pflanze anlegen</h2>
 
     <form @submit.prevent="createPlant">
-      <input v-model="newPlant.name" placeholder="Name" />
-      <input v-model="newPlant.plantType" placeholder="Typ" />
-      <input v-model="newPlant.soilType" placeholder="Boden" />
-      <input v-model="newPlant.sunlight" placeholder="Licht" />
-      <input v-model="newPlant.space" placeholder="Platz" />
-      <input v-model="newPlant.climateZone" placeholder="Klima" />
-      <input v-model="newPlant.waterRequirement" placeholder="Wasserbedarf" />
-      <input v-model="newPlant.harvestSeason" placeholder="Erntezeit" />
-      
-      <button type="submit">Speichern</button>
+    <input v-model="newPlant.name" placeholder="Name" />
+
+    <label>Typ:</label>
+    <select v-model="newPlant.plantType">
+        <option value="">Bitte wählen</option>
+        <option value="vegetable">Gemüse</option>
+        <option value="fruit">Obst</option>
+        <option value="herb">Kräuter</option>
+        <option value="ornamental">Zierpflanze</option>
+        <option value="grain">Getreide</option>
+        <option value="energy crop">Energiepflanze</option>
+    </select>
+
+    <label>Boden:</label>
+    <select v-model="newPlant.soilType">
+        <option value="">Bitte wählen</option>
+        <option value="loamy">Lehm</option>
+        <option value="sandy">Sand</option>
+        <option value="clay">Ton</option>
+        <option value="humus-rich">Humusreich</option>
+    </select>
+
+    <label>Licht:</label>
+    <select v-model="newPlant.sunlight">
+        <option value="">Bitte wählen</option>
+        <option value="full sun">Vollsonne</option>
+        <option value="partial shade">Halbschatten</option>
+        <option value="shade">Schatten</option>
+    </select>
+
+    <label>Klimazone:</label>
+    <select v-model="newPlant.climateZone">
+        <option value="">Bitte wählen</option>
+        <option value="tropical">Tropisch</option>
+        <option value="subtropical">Subtropisch</option>
+        <option value="temperate">Gemäßigt</option>
+    </select>
+
+    <label>Wasserbedarf:</label>
+    <select v-model="newPlant.waterRequirement">
+        <option value="">Bitte wählen</option>
+        <option value="low">Niedrig</option>
+        <option value="medium">Mittel</option>
+        <option value="high">Hoch</option>
+    </select>
+
+    <label>Erntezeit:</label>
+    <select v-model="newPlant.harvestSeason">
+        <option value="">Bitte wählen</option>
+        <option value="spring">Frühling</option>
+        <option value="summer">Sommer</option>
+        <option value="autumn">Herbst</option>
+        <option value="winter">Winter</option>
+        <option value="all year">Ganzjährig</option>
+    </select>
+
+    <button type="submit">Speichern</button>
     </form>
 
     <p>{{ message }}</p>

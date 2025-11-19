@@ -11,7 +11,6 @@ function validate(input: Partial<Plant>) {
     "plantType",
     "soilType",
     "sunlight",
-    "space",
   ] as const;
 
   for (const field of required) {
@@ -36,7 +35,6 @@ export async function createPlant(input: Partial<Plant>): Promise<Plant> {
     plantType: input.plantType!,
     soilType: input.soilType!,
     sunlight: input.sunlight!,
-    space: input.space!,
     climateZone: input.climateZone ?? "temperate",
     waterRequirement: input.waterRequirement ?? "medium",
     harvestSeason: input.harvestSeason ?? "summer",
@@ -85,10 +83,6 @@ export async function updatePlant(id: string, input: Partial<Plant>): Promise<Pl
     plant.sunlight = input.sunlight;
   }
 
-  if (input.space !== undefined) {
-    plant.space = input.space;
-  }
-
   if (input.climateZone !== undefined) {
     plant.climateZone = input.climateZone;
   }
@@ -104,4 +98,3 @@ export async function updatePlant(id: string, input: Partial<Plant>): Promise<Pl
   await db.saveDb(store);
   return plant;
 }
-
