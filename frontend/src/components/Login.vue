@@ -43,29 +43,94 @@ function goToRegister() {
 </script>
 
 <template>
-  <h1>Login</h1>
+  <div class="page-container">
+    <h1>Login</h1>
 
-  <div class="login-container">
-    <label>
-      Benutzername:
-      <input v-model="username" />
-    </label>
+    <div class="form-container">
 
-    <label>
-      Passwort:
-      <input type="password" v-model="password" />
-    </label>
+      <label> Benutzername
+        <input v-model="username" />
+      </label>
 
-    <button @click="loginUser">Einloggen</button>
+      <label> Passwort
+        <input type="password" v-model="password" />
+      </label>
 
-    <div style="margin-top: 1rem;">
-      <p>Noch keinen Account?</p>
-      <button @click="goToRegister">Registrieren</button>
+      <button @click="loginUser" class="primary-btn">Einloggen</button>
+
+      <div class="sub">
+        <p>Noch keinen Account?</p>
+        <button @click="goToRegister" class="secondary-btn">Registrieren</button>
+      </div>
+
+      <p class="message">{{ message }}</p>
     </div>
-
-    <p>{{ message }}</p>
   </div>
 </template>
 
-<style>
+<style scoped>
+* {
+  font-family: Arial, sans-serif;
+}
+
+.page-container {
+  max-width: 420px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+label {
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+input {
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.primary-btn {
+  padding: 0.75rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.primary-btn:hover { background: #45a049; }
+
+.secondary-btn {
+  padding: 0.5rem;
+  background: #e8e8e8;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.secondary-btn:hover { background: #dcdcdc; }
+
+.sub {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.message {
+  color: red;
+  font-weight: bold;
+  margin-top: 1rem;
+}
 </style>

@@ -22,8 +22,6 @@ async function loadPlants() {
 async function createPlant() {
   const token = localStorage.getItem("token");
 
-  console.log("newPlant vor dem Clean:", newPlant.value);
-
   const payload = {};
   for (const key in newPlant.value) {
     if (newPlant.value[key] !== "") {
@@ -56,9 +54,7 @@ async function deletePlant(id) {
 
   await fetch(`http://localhost:8000/api/plants/${id}`, {
     method: "DELETE",
-    headers: {
-      "Authorization": "Bearer " + token
-    }
+    headers: { "Authorization": "Bearer " + token }
   });
 
   await loadPlants();
@@ -68,90 +64,163 @@ onMounted(loadPlants);
 </script>
 
 <template>
-  <div>
-    <h1>Admin Bereich</h1>
+  <div class="page-container">
 
+    <h1>Admin Bereich</h1>
     <h2>Neue Pflanze anlegen</h2>
 
-    <form @submit.prevent="createPlant">
-    <input v-model="newPlant.name" placeholder="Name" />
+    <form @submit.prevent="createPlant" class="form">
 
-    <label>Typ:</label>
-    <select v-model="newPlant.plantType">
-        <option value="">Bitte wählen</option>
-        <option value="vegetable">Gemüse</option>
-        <option value="fruit">Obst</option>
-        <option value="herb">Kräuter</option>
-        <option value="ornamental">Zierpflanze</option>
-        <option value="grain">Getreide</option>
-        <option value="energy crop">Energiepflanze</option>
-    </select>
+      <label>Name:
+        <input v-model="newPlant.name" />
+      </label>
 
-    <label>Boden:</label>
-    <select v-model="newPlant.soilType">
-        <option value="">Bitte wählen</option>
-        <option value="loamy">Lehm</option>
-        <option value="sandy">Sand</option>
-        <option value="clay">Ton</option>
-        <option value="humus-rich">Humusreich</option>
-    </select>
+      <label>Typ:
+        <select v-model="newPlant.plantType">
+          <option value="">Bitte wählen</option>
+          <option value="vegetable">Gemüse</option>
+          <option value="fruit">Obst</option>
+          <option value="herb">Kräuter</option>
+          <option value="ornamental">Zierpflanze</option>
+          <option value="grain">Getreide</option>
+          <option value="energy crop">Energiepflanze</option>
+        </select>
+      </label>
 
-    <label>Licht:</label>
-    <select v-model="newPlant.sunlight">
-        <option value="">Bitte wählen</option>
-        <option value="full sun">Vollsonne</option>
-        <option value="partial shade">Halbschatten</option>
-        <option value="shade">Schatten</option>
-    </select>
+      <label>Boden:
+        <select v-model="newPlant.soilType">
+          <option value="">Bitte wählen</option>
+          <option value="loamy">Lehm</option>
+          <option value="sandy">Sand</option>
+          <option value="clay">Ton</option>
+          <option value="humus-rich">Humusreich</option>
+        </select>
+      </label>
 
-    <label>Klimazone:</label>
-    <select v-model="newPlant.climateZone">
-        <option value="">Bitte wählen</option>
-        <option value="tropical">Tropisch</option>
-        <option value="subtropical">Subtropisch</option>
-        <option value="temperate">Gemäßigt</option>
-    </select>
+      <label>Licht:
+        <select v-model="newPlant.sunlight">
+          <option value="">Bitte wählen</option>
+          <option value="full sun">Vollsonne</option>
+          <option value="partial shade">Halbschatten</option>
+          <option value="shade">Schatten</option>
+        </select>
+      </label>
 
-    <label>Wasserbedarf:</label>
-    <select v-model="newPlant.waterRequirement">
-        <option value="">Bitte wählen</option>
-        <option value="low">Niedrig</option>
-        <option value="medium">Mittel</option>
-        <option value="high">Hoch</option>
-    </select>
+      <label>Klimazone:
+        <select v-model="newPlant.climateZone">
+          <option value="">Bitte wählen</option>
+          <option value="tropical">Tropisch</option>
+          <option value="subtropical">Subtropisch</option>
+          <option value="temperate">Gemäßigt</option>
+        </select>
+      </label>
 
-    <label>Erntezeit:</label>
-    <select v-model="newPlant.harvestSeason">
-        <option value="">Bitte wählen</option>
-        <option value="spring">Frühling</option>
-        <option value="summer">Sommer</option>
-        <option value="autumn">Herbst</option>
-        <option value="winter">Winter</option>
-        <option value="all year">Ganzjährig</option>
-    </select>
+      <label>Wasserbedarf:
+        <select v-model="newPlant.waterRequirement">
+          <option value="">Bitte wählen</option>
+          <option value="low">Niedrig</option>
+          <option value="medium">Mittel</option>
+          <option value="high">Hoch</option>
+        </select>
+      </label>
 
-    <button type="submit">Speichern</button>
+      <label>Erntezeit:
+        <select v-model="newPlant.harvestSeason">
+          <option value="">Bitte wählen</option>
+          <option value="spring">Frühling</option>
+          <option value="summer">Sommer</option>
+          <option value="autumn">Herbst</option>
+          <option value="winter">Winter</option>
+          <option value="all year">Ganzjährig</option>
+        </select>
+      </label>
+
+      <button type="submit" class="primary-btn">Speichern</button>
     </form>
 
-    <p>{{ message }}</p>
+    <p class="message">{{ message }}</p>
 
     <h2>Alle Pflanzen</h2>
 
-    <ul>
+    <ul class="plant-list">
       <li v-for="p in plants" :key="p.id">
-        {{ p.name }} ({{ p.plantType }})
-        <button @click="deletePlant(p.id)">Löschen</button>
+        <span>{{ p.name }} ({{ p.plantType }})</span>
+        <button @click="deletePlant(p.id)" class="delete-btn">Löschen</button>
       </li>
     </ul>
   </div>
 </template>
 
 <style scoped>
-input {
-  display: block;
-  margin: 5px 0;
+* { font-family: Arial, sans-serif; }
+
+.page-container {
+  max-width: 1000px;
+  margin: auto;
 }
-button {
-  margin-top: 10px;
+
+.form {
+  background: #fff;
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+
+input, select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.primary-btn {
+  padding: 0.75rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  grid-column: span 2;
+}
+.primary-btn:hover { background: #45a049; }
+
+.plant-list {
+  list-style: none;
+  padding: 0;
+}
+
+.plant-list li {
+  display: flex;
+  justify-content: space-between;
+  background: #f9f9f9;
+  padding: 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.delete-btn {
+  background: #c62828;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.delete-btn:hover {
+  background: #b71c1c;
+}
+
+.message {
+  color: green;
+  margin-top: 1rem;
 }
 </style>
