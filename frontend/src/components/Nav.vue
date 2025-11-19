@@ -22,7 +22,6 @@ function logout() {
 }
 </script>
 
-
 <template>
   <nav class="nav-wrapper">
     <div class="nav-inner">
@@ -53,18 +52,18 @@ function logout() {
 }
 
 .nav-inner {
-  max-width: 100px;
+  max-width: 1200px;
   margin: 0 auto;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  padding: 0 2rem;
+  padding: 0 2rem; 
 }
 
 .left a {
-  margin-right: 1rem; 
+  margin-right: 1rem;
   text-decoration: none;
   color: #333;
   font-weight: bold;
@@ -86,5 +85,4 @@ function logout() {
 .logout-btn:hover {
   background: #45a049;
 }
-
 </style>
