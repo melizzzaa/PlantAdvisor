@@ -5,7 +5,7 @@ type FavoriteEntry = {
   plantId: string;
 };
 
-const FAVORITES_PATH = "./data/favorites.json";
+const FAVORITES_PATH = "../data/favorites.json";
 
 async function loadFavorites(): Promise<FavoriteEntry[]> {
   try {

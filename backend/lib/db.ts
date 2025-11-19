@@ -1,7 +1,7 @@
 import { Plant } from "../models/plant.ts";
 import type { User } from "./userService.ts";
 
-const DB_PATH = "./data/db.json";
+const DB_PATH = "../data/db.json";
 
 type DbShape = {
   plants: Plant[];
