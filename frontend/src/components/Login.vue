@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { setToken } from "../token.js";
 
 const username = ref("");
 const password = ref("");
@@ -28,7 +29,9 @@ async function loginUser() {
       return;
     }
 
-    localStorage.setItem("token", data.token);
+
+    setToken(data.token);
+
 
     router.push("/recommendation");
 

@@ -1,28 +1,27 @@
 <script setup>
-import { ref } from "vue";
+import { computed } from "vue";
+import { token, setToken } from "../token.js";
 
-const token = localStorage.getItem("token");
-const user = ref(null);
+const user = computed(() => {
+  if (!token.value) return null;
 
-if (token) {
   try {
-    user.value = JSON.parse(
-      atob(
-        token.split(".")[1]
-          .replace(/-/g, "+")
-          .replace(/_/g, "/")
-      )
-    );
+    const payload = token.value.split(".")[1]
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+
+    return JSON.parse(atob(payload));
   } catch {
-    user.value = null;
+    return null;
   }
-}
+});
 
 function logout() {
-  localStorage.removeItem("token");
+  setToken(null);
   window.location.href = "/login";
 }
 </script>
+
 
 <template>
   <nav class="nav-wrapper">
@@ -54,7 +53,7 @@ function logout() {
 }
 
 .nav-inner {
-  max-width: 1060px;
+  max-width: 100px;
   margin: 0 auto;
 
   display: flex;
