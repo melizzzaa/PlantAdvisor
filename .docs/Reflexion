@@ -1,0 +1,45 @@
+7. Reflexion
+
+7.1 Herausforderungen
+Während der Entwicklung von PlantAdvisor gab es mehrere technische Herausforderungen, die vor allem durch die Kombination aus Frontend, Backend und JSON-Dateibasierter Persistenz entstanden sind.
+Eine der ersten Schwierigkeiten betraf ein Problem mit dem Dateinamen der Plant-Definition. Die Datei wurde in verschiedenen Teilen des Projekts einmal als Plant.ts und einmal als plant.ts importiert. Da Deno strikt zwischen Groß- und Kleinschreibung unterscheidet, führte dies zu einem Casing-Fehler, der anfangs schwer zu fixen war. Nachdem die Datei einheitlich benannt und alle Importe bereinigt wurden, lief das Projekt wieder.
+Ein weiteres wiederkehrendes Thema war das Zusammenspiel zwischen Backend-Routen und dem Frontend. Besonders beim Login und bei der Favoritenfunktion traten anfangs Fehler auf, weil Requests ohne gültigen Authorization-Header gesendet wurden oder die CORS-Konfiguration unvollständig war. Diese Probleme zeigten sich erst im Browser und nicht in Postman, was die Fehlersuche erschwerte. Durch zusätzliche Header in der CORS-Middleware und das konsequente Testen jeder Route konnten diese Fehler behoben werden.
+Beim Aktualisieren der Pflanzen kam es anfangs zu unvollständigen oder fehlerhaften Einträgen in der JSON-Datei, da nicht alle Update-Requests sauber mit den bestehenden Daten zusammengeführt wurden. Dadurch wurden einzelne Felder überschrieben oder fehlten vollständig. Durch die Einführung eines zentralen db.ts-Moduls und klaren Service-Funktionen ließ sich dieses Problem beheben.
+Im Frontend entstanden Schwierigkeiten durch die Reaktivität des Login-Status. Der Admin-Reiter wurde nach einem Benutzerwechsel erst nach einem manuellen Refresh angezeigt. Die Ursache war, dass der Token beim Komponenten-Mount ausgelesen wurde, aber nicht reaktiv war. Durch das Auslagern des Tokens in eine eigene Datei (token.js) und die Nutzung eines reaktiven ref konnte der Zustand sauber überwacht und das Verhalten korrigiert werden.
+Weitere kleinere Probleme betrafen Vue-spezifische Themen wie nicht definierte Variablen, falsch gesetzte Props oder nicht korrekt importierte Komponenten. Diese Fehler ließen sich in der Regel jedoch schnell beheben. 
+Rückblickend waren die Herausforderungen vor allem eine Folge davon, zum ersten Mal ein vollständiges Fullstack-Projekt zu entwickeln. Gleichzeitig haben sie aber auch dazu geführt, dass ich u.a. den Aufbau einer REST-API und das Routing in Vue deutlich besser verstanden habe.
+
+7.2. Unterstützung
+Während des Projekts habe ich verschiedene Hilfsmittel genutzt, um technische Herausforderungen zu lösen und den Gesamtaufbau der Anwendung besser zu verstehen. 
+Zu Beginn bei der Erstellung und Einrichtung des Projekts habe ich viel mit den offiziellen Docs von Vue  und Deno  gearbeitet. Diese haben mir sehr dabei geholfen, den Projektstart selbstständig zu schaffen und auch die Grundsätze zu verstehen.
+Im weiteren Verlauf habe ich gemerkt, dass ich allein mit den Vorlesungsinhalten und den Dokumentationen häufig nicht weiterkam, vor allem wenn mehrere Probleme gleichzeitig auftraten oder Fehlermeldungen schwer zu interpretieren waren. Ich wollte am Anfang unbedingt selbst den Code schreiben, um alles besser zu verstehen, kam dann aber ziemlich schnell an meine Grenzen. In diesen Fällen habe ich intensiv mit ChatGPT  gearbeitet. Die KI habe ich vor allem dafür genutzt, mir bestimmte technische Zusammenhänge noch einmal erklären zu lassen, Fehlerursachen einzugrenzen und Codeschnipsel zu verbessern. 
+Viele Funktionen konnte ich zunächst nur teilweise oder fehlerhaft umsetzen, da mir anfangs das vollständige Verständnis für den Gesamtzusammenhang zwischen Frontend, Backend und JSON-Persistenz gefehlt hat. 
+Im Endeffekt musste ich einige meiner eigenen Implementierungen mithilfe von KI korrigieren lassen, damit meine Anwendung zuverlässig läuft. Das letzte Styling des Frontends wurde überwiegend mit KI umgesetzt.
+
+7.3. Lernerfolge / Fazit
+Was haben Sie bei diesem Projekt gelernt? Wie können Sie dieses Wissen in Zukunft einsetzen? Was lief in Ihrem Projekt gut, was würden Sie in Zukunft wie verbessern? Wie finden Sie ihr Ergebnis? Was kann man nun damit machen? Wie kann es weiterentwickelt werden? 
+Technische Lernerfolge
+Im technischen Bereich habe ich durch das Projekt ein deutlich besseres Verständnis für den Aufbau einer vollständigen Webanwendung gewonnen. Viele Inhalte aus den Vorlesungen konnte ich zum ersten Mal eigenständig praktisch anwenden und miteinander verbinden. 
+Wesentliche technische Lernerfolge waren:
+•	Verständnis für Vue-Komponenten, Routing und Reaktivität
+•	Aufbau einer REST-API mit Deno und Oak
+•	korrekte Nutzung von JWT, Passwort-Hashing und Middleware
+•	strukturierter Backend-Code durch Services und zentrale Dateioperationen
+•	sicherer Umgang mit JSON-Daten und typischen Persistenzfehlern
+Organisatorische Lernerfolge
+Organisatorisch habe ich gelernt, dass eine strukturierte Vorgehensweise entscheidend ist, um solche Projekte gut umzusetzen. Am Anfang habe ich vieles gleichzeitig probiert, was häufig zu Chaos geführt hat. Mit der Zeit wurde mein Vorgehen deutlich systematischer.
+Wichtige organisatorische Erkenntnisse:
+•	Detaillierte Planung der Funktionen vor der Umsetzung
+•	Aufteilung des Projekts in kleinere, überschaubare Schritte
+•	regelmäßiges Testen mit Postman und Browser-Konsole
+•	fokussiertes Debugging, statt mehrere Probleme gleichzeitig anzugehen
+Persönliche Lernerfolge
+Persönlich hat mir das Projekt gezeigt, wie wichtig Geduld beim Programmieren ist. Besonders am Anfang war es frustrierend, wenn ich Fehler nicht sofort verstanden habe oder mehrere Probleme gleichzeitig aufgetreten sind.
+Zu den wichtigsten persönlichen Lernergebnissen gehören:
+•	realistische Einschätzung der eigenen Grenzen
+•	mehr Sicherheit im Lesen und Verstehen von Code
+•	strukturierterer Umgang mit Fehlermeldungen
+•	selbstständiges Lösen technischer Probleme
+Was ich in Zukunft verbessern würde
+Rückblickend würde ich einige Dinge anders angehen, um den Entwicklungsprozess noch effizienter zu gestalten. Vor allem würde ich zu Beginn mehr Zeit in die Planung investieren, um diese dann nicht mitten im Projekt nachzuholen. Außerdem würde ich von vorne rein ein technisch weniger anspruchsvolles Projekt angehen, um nicht so viel Hilfe von KI in Anspruch zu nehmen. 
+Mit dem Endergebnis bin ich insgesamt sehr zufrieden. Die Anwendung ist vollständig, funktioniert stabil und bildet eine solide Grundlage, die sich problemlos erweitern lässt . Beispielsweise durch zusätzliche Filter, ein verbessertes Design, eine echte Datenbank oder mobile Optimierung.

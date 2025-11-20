@@ -1,0 +1,50 @@
+B. Benutzerdokumentation
+
+1. Registrierung und Login eines Nutzers
+Damit ein Benutzer die Anwendung vollständig nutzen kann, benötigt er ein persönliches Benutzerkonto. Nur so können alle Daten wie z.B. die Favoriten gespeichert werden. 
+Ablauf:
+1.	Nutzer kommt erst auf die Login-Seite.
+2.	Er hat noch kein Konto und klickt deswegen auf den „Registrieren“-Button.
+3.	Er gibt in der Oberfläche einen Benutzernamen und ein Passwort ein.
+4.	Mit einem Klick auf „Konto erstellen“ wird das Konto angelegt.
+5.	Nach erfolgreicher Registrierung erfolgt eine Weiterleitung zur Login-Seite.
+6.	Hier muss er erneut seinen Benutzernamen und das Passwort angeben um sich einzuloggen.
+7.	Danach wird er auf die Startseite weitergeleitet.
+Wenn der Nutzer schon ein Konto hat sind logischerweise nur Punkt 6 und 7 für den Login relevant.
+
+2. Startseite nach Login/Pflanzenvorschläge
+Der Nutzer meldet sich an und sieht sofort eine Liste aller verfügbaren Pflanzen.
+Jede Pflanze wird mit ihren wichtigsten Eigenschaften dargestellt.
+Möglichkeiten für den Nutzer:
+•	Pflanzenvorschläge durchstöbern
+•	Eigenschaften der Pflanzen auf einen Blick wissen
+•	Filter anwenden
+•	Pflanzen zu Favoriten hinzufügen
+ 
+3. Pflanzen filtern
+Ein Nutzer möchte Pflanzen finden, die zu seinen spezifischen Anforderungen passen.
+Er wählt die entsprechenden Filter aus, woraufhin die Liste aktualisiert wird. Im Normalzustand werden alle Pflanzen der Liste angezeigt. 
+Mögliche Filterkriterien:
+•	Pflanzenart
+•	Bodenart
+•	Sonnenlicht
+•	Klimazone
+•	Wasserbedarf
+•	Erntezeit
+ 
+4. Favoriten speichern und verwalten
+Der Nutzer findet eine passende Pflanze und klickt auf „Zu Favoriten hinzufügen“. Auf der Seite „Favoriten“ sieht er später alle gespeicherten Pflanzen übersichtlich aufgelistet. Mit dem Button „Zurück zu Empfehlungen“ kann der Nutzer wieder zurück zur Startseite um weiter nach Pflanzen zu stöbern. Die favorisierten Pflanzen bleiben gespeichert bis der Nutzer sie wieder entfernt. 
+Mögliche Aktionen:
+•	Pflanze zur Favoritenliste hinzufügen
+•	Favoriten ansehen
+•	Pflanzen aus Favoriten entfernen
+ 
+6. Pflanzenverwaltung für Admins
+Administratoren können Pflanzen erstellen und löschen. Dies dient der Pflege und Erweiterung der Datenbasis. Dafür muss er sich als Admin anmelden und in den Adminbereich wechseln. Dort gibt es ein Formular zum Anlegen der Pflanzen und eine Liste der Pflanzen mit der Option sie zu löschen. 
+ 
+7. Logout
+Der Logout schützt das persönliche Konto, insbesondere wenn das Gerät von mehreren Personen genutzt wird.
+Ablauf:
+1.	Klick auf den „Logout“-Button in der Navigation
+2.	Das gespeicherte Token wird gelöscht
+3.	Weiterleitung zur Loginseite

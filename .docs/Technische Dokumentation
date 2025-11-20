@@ -1,0 +1,260 @@
+1. Thema des Projekts
+
+Webanwendung zur Empfehlung geeigneter Pflanzen:
+Die Zielgruppe der Anwendung sind vorwiegend Landwirte und Hobbygärtner. Sie unterstützt die Nutzer dabei, Pflanzenarten und Gemüsesorten zu finden, die zu den ausgewählten Bedingungen passen. Nutzer geben Kriterien wie Pflanzenart, Bodenart, Sonneneinstrahlung, Klimazone, Wasserbedarf und Erntezeit an, und die Anwendung schlägt daraufhin geeignete Pflanzen vor. Die Vorschläge können außerdem zu einer Favoritenliste hinzugefügt werden. Ein Login-System ermöglicht die persönliche Nutzung der Anwendung. Wenn man als Admin angemeldet ist, kann man neue Pflanzenarten anlegen und entfernen.
+Ich habe mich für diese Anwendung entschieden, weil mir eine ähnliche Idee beim Brainstorming für das Pitch-Projekt gekommen ist. Die geplante App stellt eine vereinfachte, umsetzbare Variante dieser ursprünglichen Idee dar.
+Auf GitHub existieren ähnliche Projekte, die Pflanzen anhand spezifischer Nutzerbedürfnisse vorschlagen. Die meisten dieser Projekte sind aber schon älter oder nicht in JavaScript umgesetzt. Bestandteile meiner App wie die Filterfunktion gibt es natürlich schon in Guides und anderen Projekten. 
+
+2. Ausgangssituation
+Vor Beginn des Projekts befand ich mich auf einem eher grundlegenden technischen Niveau. Die meisten Inhalte, die für eine vollständige Webanwendung notwendig sind, hatte ich erst im Laufe des dritten Semesters kennengelernt. Zwar verfügte ich bereits über erste Erfahrungen aus früheren Vorlesungen, zum Beispiel mit HTML, CSS und grundlegender JavaScript-Syntax, doch diese reichten nur für einfache Frontend-Aufgaben.
+Themen wie asynchrone Web-APIs, REST-Schnittstellen, serverseitige Entwicklung oder persistente Datenspeicherung kannte ich bis dahin nur theoretisch. Mit Authentifizierung, Token-basierten Login-Systemen oder eigenen Backends hatte ich vorher kaum Berührungspunkte. 
+In meinen Praxisphasen hatte ich kaum Programmieraufgaben und war überwiegend in nicht-technischen Tätigkeiten eingebunden. Das T4-Projekt war deshalb das erste Mal, dass ich eine vollständige Fullstack-Webanwendung selbst entwickelt habe.
+Skill-Übersicht:
+•	Grundkenntnisse in HTML und CSS, JavaScript/TypeScript aus den Vorlesungen der letzten Semester
+•	Grundlegende Vue.js-Kenntnisse, aber noch kein eigenes Vue-Projekt umgesetzt
+•	Keine praktische Erfahrung mit Backend-Entwicklung (Deno, Oak, APIs, Datenbanken)
+•	Keine Erfahrung mit Authentifizierung und Login-Systemen
+•	Insgesamt nur Einsteigerniveau
+ 
+3. Vorgehen
+Wie sind Sie vorgegangen? Wie haben Sie geplant? Welche Aktivitäten haben Sie vorgesehen? 
+Wie fand Ihr Wissenserwerb und eventuell auch eine Wissensweitergabe statt?
+Zu Beginn des Projekts stand eine kurze Planungsphase. Ich habe zunächst festgelegt, welche Funktionen die Anwendung erfüllen muss und wie diese logisch zusammenhängen sollen. Dazu gehörten die Pflanzenempfehlungen, die Filtermöglichkeiten, die Favoritenfunktion, der Login und ein kleiner Adminbereich. Anschließend habe ich die Anforderungen aus der offiziellen Aufgabenstellung für mich strukturiert und mit meinen geplanten Funktionen abgeglichen. Dabei habe ich gleichzeitig mein Wissen aus den Vorlesungen aufgefrischt.
+Nach dieser ersten Planung habe ich die Projektstruktur angelegt und jeweils einen eigenen Ordner für das Frontend und das Backend erstellt. Das Frontend wurde mit Vue 3 und Vite eingerichtet. Dabei habe ich die automatisch generierten Beispielkomponenten entfernt, um eine übersichtlichere Basis zu haben. Im selben Zug habe ich im Backend Deno installiert und das Oak-Framework eingebunden. Nach dem erfolgreichen Setup entstand eine erste Test-Route, um zu überprüfen, ob der Server korrekt läuft und Anfragen verarbeitet. 
+Für die Pflanzenempfehlungen habe ich zunächst eine JSON-Datenbank erstellt. Die enthaltenen Pflanzendaten wurden mithilfe von ChatGPT generiert. Darauf aufbauend habe ich die CRUD-Zyklen im Backend implementiert: alle Pflanzen auslesen, neue Pflanzen anlegen, bestehende aktualisieren und löschen. Jede dieser Funktionen wurde in eigene Service-Funktionen ausgelagert und anschließend über REST-Endpunkte verbunden. 
+Zur Überprüfung der API habe ich während der gesamten Entwicklung mit Postman getestet. 
+Als Nächstes habe ich die Filterkriterien für die Empfehlungsliste definiert und eine eigene Empfehlungsroute erstellt. Diese verarbeitet mehrere optionale Query-Parameter und liefert passende Pflanzen zurück. 
+
+Danach folgte die Umsetzung der Authentifizierung. Dazu gehörten Passwort-Hashing, die Erstellung eigener JWT-Tokens sowie geschützte Routen über eine Auth-Middleware. Im Frontend wurde die Login-Seite erstellt und ein Router-Guard eingerichtet, damit z.B. der Admin-Bereich auch nur für Admin-Nutzer zugänglich ist. 
+Anschließend wurde die Favoritenfunktion entwickelt. Dafür habe ich eine zusätzliche JSON-Datei eingeführt, in der Favoriten pro Nutzer gespeichert werden. Das Frontend wurde so erweitert, dass Nutzer direkt aus der Empfehlungsseite Pflanzen als Favoriten speichern und entfernen können. 
+
+Zum Abschluss der technischen Arbeiten habe ich das restliche Styling des Frontends umgesetzt. Dazu gehörten die Empfehlungsliste, die Favoritenansicht, der Adminbereich sowie die Navigationsleiste. Eine einheitliche Struktur und klare Abstände sollten das Layout übersichtlich und gut bedienbar machen. 
+Der Wissenserwerb fand über mehrere Quellen statt: 
+•	Inhalte der T4- und T5-Vorlesungen
+•	Deno-Dokumentation zur Installation und den Oak-Guides
+•	Für das Frontend habe ich häufig den offiziellen Vue Guide verwendet
+•	Bei Fehlermeldungen, Debugging-Problemen oder Detailfragen habe ChatGPT (Version 5/5.1) 
+ 
+4. Anforderungsliste
+Nr	Anforderung	Fertigstellungsgrad
+1	Nutzer können ein eigenes Nutzerkonto anlegen (Registrierung).	vollständig umgesetzt
+2	Nutzer können sich anmelden (Login) und erhalten ein gültiges Token.	vollständig umgesetzt
+3	Geschützte Bereiche der Anwendung sind nur mit gültigem Token zugänglich.	vollständig umgesetzt
+4	Pflanzen werden in einer JSON-Datenbank gespeichert.	vollständig umgesetzt
+5	Nutzer können alle Pflanzen abrufen.	vollständig umgesetzt
+6	Admin-Nutzer können neue Pflanzen anlegen, bearbeiten und löschen.	vollständig umgesetzt
+7	Nutzer können Pflanzen nach Kriterien filtern (Pflanzenart, Bodenart, Licht, Klimazone, Wasserbedarf, Erntezeit).	vollständig umgesetzt
+8	Eine eigene Empfehlungsroute („/api/recommend“) steht zur Verfügung.	vollständig umgesetzt
+9	Nutzer können Pflanzen zu Favoriten hinzufügen und die Favoriten anzeigen lassen.	vollständig umgesetzt
+10	Nutzer können Favoriten wieder entfernen.	vollständig umgesetzt
+11	Favoriten werden nutzerspezifisch in einer separaten JSON-Datei gespeichert.	vollständig umgesetzt
+12	Die Anwendung bietet eine vollständige Single-Page-Application (SPA) mit Vue Router.	vollständig umgesetzt
+13	Die Anwendung hat ein simples, nutzerfreundliches Styling.	vollständig umgesetzt
+14	Navigation passt sich Login-Status und Benutzerrolle (Admin) an.	vollständig umgesetzt
+15	Fehlerbehandlung im Backend (ungültige Eingaben, fehlende Felder).	fast vollständig umgesetzt
+16	Das Backend stellt eine klare REST-API mit GET/POST/PUT/DELETE bereit.	vollständig umgesetzt
+17	Kommunikation zwischen Frontend und Backend erfolgt über JSON.	vollständig umgesetzt
+18	UI aktualisiert sich sofort durch reaktive Mechanismen (z. B. Token-Änderungen).	vollständig umgesetzt
+19	Anwendung ist lokal startbar (Deno + Vite).	vollständig umgesetzt
+
+5. Konzeption
+5.1. Technologie-/Werkzeugauswahl
+Frontend (Vue.js + Vite)
+•	Ermöglicht eine modulare Single-Page-Application
+•	Reaktivität für Filter, Login-Status, Favoriten
+•	Vue Router für Navigation ohne Seitenreload
+•	In der Vorlesung behandelt 
+Backend (Deno + Oak)
+•	Moderne Laufzeitumgebung für TypeScript
+•	Sicherheitsfunktionen (Dateizugriff, Netzwerke)
+•	In der Vorlesung behandelt
+Persistenz (JSON-Dateien)
+•	Kein zusätzliches Datenbank-Setup erforderlich 
+•	Leicht zu bearbeiten und zu debuggen
+•	Für CRUD-Operationen ausreichend
+•	Übersichtliche Darstellung der Daten (pflanzen.json, favorites.json, users.json)
+
+Zusätzliche Werkzeuge
+VS Code + Deno Extension
+•	Syntax-Highlighting
+•	TypeScript-Unterstützung
+•	Automatische Deno-Konfiguration
+Postman
+•	Testen der API-Routen unabhängig vom Frontend
+Hilfen
+•	Deno-Dokumentation 
+•	Vue.js Guide 
+•	Vorlesungsinhalte T4/T5
+•	ChatGPT 
+
+5.2. Entwurf
+5.2.1 Gesamtarchitektur
+Die Anwendung PlantAdvisor folgt einer klassischen Client-Server-Architektur. Das Frontend ist als Single-Page-Application (SPA) mit Vue.js umgesetzt, während das Backend über Deno und Oak eine REST-API bereitstellt. Die gesamte Datenhaltung erfolgt über JSON-Dateien, die serverseitig verwaltet werden.
+Frontend (Client)
+•	Implementiert mit Vue.js und Vite
+•	Komponentenbasierter Aufbau (Views + Komponenten)
+•	Navigation über den Vue Router
+•	Reaktives Laden der Inhalte ohne Seitenreload
+•	Login-Status wird über ein JWT-Token im localStorage verwaltet
+•	Kommunikation mit dem Backend ausschließlich über fetch-Requests (JSON)
+Backend (Server)
+•	Implementiert mit Deno und dem Oak-Framework
+•	Router für REST-Endpunkte
+•	Middleware zur JWT-Validierung für geschützte Routen
+•	Geschäftslogik gekapselt in Services (plantService, userService, favoriteService)
+•	Persistenz über JSON-Dateien, verwaltet durch ein eigenes Hilfsmodul db.ts
+Persistenz
+•	JSON-Dateien als einfache Datenbank
+•	Module kapseln Dateioperationen (Lesen, Schreiben, Aktualisieren)
+•	Services bleiben unabhängig von der Dateiverarbeitung (DAO-ähnliches Prinzip)
+Datenfluss
+1.	Nutzer interagiert mit dem Frontend
+2.	Frontend sendet Request an Backend
+3.	Backend validiert, führt Logik aus und aktualisiert JSON-Dateien
+4.	Backend gibt JSON zurück
+5.	Frontend rendert neue Daten ohne Reload
+
+5.2.2 Dateibaum
+plantadvisor/
+│
+├── backend/
+│   ├── config/
+│   ├── data/
+│   │   ├── db.json
+│   │   └── favorites.json
+│   ├── lib/
+│   │   ├── authMiddleware.ts
+│   │   ├── authService.ts
+│   │   ├── db.ts
+│   │   ├── favoriteService.ts
+│   │   ├── plantService.ts
+│   │   └── userService.ts
+│   ├── models/
+│   │   └── plant.ts
+│   └── routes/
+│       └── server.ts
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Login.vue
+│   │   │   ├── Nav.vue
+│   │   │   ├── Recommendation.vue
+│   │   │   └── Register.vue
+│   │   ├── router/
+│   │   │   └── index.js
+│   │   ├── views/
+│   │   │   ├── Admin.vue
+│   │   │   └── Favorites.vue
+│   │   ├── App.vue
+│   │   ├── main.js
+│   │   └── token.js
+│   ├── index.html
+│   └── package.json
+│   └── package-lock.json
+│   └── .gitignore
+│   └── vite.config.js
+└── .vscode/
+ 
+5.2.3 UI-Entwurf und Entscheidungen
+Der Entwurf sollte schlicht und übersichtlich werden damit der Nutzer sich gut zurecht findet, ohne von besonderen UI-Elementen abgelenkt zu werden.
+Layout
+•	Navigationsleiste am oberen Rand
+•	Hauptbereich dynamisch über <router-view>
+•	Footer am Seitenende
+•	Einheitliche maximale Breite des Inhalts (1000px) für klare Struktur
+•	Konsistente Abstände für ruhiges Layout
+Views
+•	Recommendation: zentrale Startseite, Filter + Ergebnisliste
+•	Favorites: Anzeige gespeicherter Favoriten
+•	Admin: Admin kann Pflanzen hinzufügen und löschen
+•	Login / Register: Formulare zur Authentifizierung
+Technische UI-Entscheidungen
+•	Keine externen CSS-Frameworks, geringere Komplexität
+•	Lokale Reaktivität statt zentralem State-Management 
+•	Navigation ist dynamisch und reagiert direkt auf Login-Status
+Abgewogene Alternativen
+•	Bootstrap oder Tailwind → verworfen zugunsten eines schlichten Layouts
+•	Multi-Page-Ansatz → unnötig, da SPA deutlich effizienter
+•	Komplexere UI-Komponenten → für dieses Projekt nicht notwendig
+
+5.2.4 Datenmodell & Persistenz
+Datenmodell Plant
+Die ursprünglich 14 Attribute habe ich auf 7 zentrale Felder reduziert, um die Datenhaltung zu vereinfachen und den Filterprozess übersichtlich zu halten.
+•	name
+•	plantType
+•	soilType
+•	sunlight
+•	climateZone
+•	waterRequirement
+•	harvestSeason
+Datenmodell User
+•	id 
+•	username 
+•	password – gehashter Passwortwert (SHA-256)
+•	favorites – Liste gespeicherter Pflanzen-IDs
+•	isAdmin – Kennzeichnung, ob der Nutzer Adminrechte besitzt
+Datenmodell Favorites
+•	Pro Nutzer ein eigener Eintrag
+•	userId → Liste von Plant-IDs
+•	Speichert nur IDs, keine kompletten Pflanzenobjekte
+•	Zugriff erfolgt ausschließlich über geschützte Routen
+•	Dient als einfache 1:n-Beziehung zwischen Nutzer und Pflanzen
+Persistenz
+Persistenz (JSON-Dateien)
+•	db.json – alle Pflanzen und Nutzer
+•	favorites.json – Favoriten pro Nutzer (userId + Pflanzen-IDs)
+•	Dateioperationen zentral gekapselt in db.ts
+	Services bleiben schlank
+	klare Trennung von Logik und Dateioperationen
+
+6. Ergebnis des Projekts
+6.1 Überblick
+Mit PlantAdvisor wurde eine vollständige Webanwendung entwickelt, die Pflanzen anhand verschiedener Kriterien empfiehlt, Favoriten speichert und einen Adminbereich zur Verwaltung der Pflanzendaten bereitstellt. Die Anwendung umfasst ein funktionierendes Login-System, dynamische Filter, eine Favoritenliste und eine klare Benutzerführung über eine Single-Page-Application.
+Die Anwendung ist funktionsfähig, stabil und vollständig entsprechend der Anforderungen aus der Aufgabenstellung implementiert.
+
+6.2 Screenflow 
+1. Login-Seite (Startpunkt der Anwendung)
+Beim Start öffnet der Nutzer die Login-Seite.
+Dort meldet er sich mit Benutzername und Passwort an.
+Nach erfolgreichem Login wird ein JWT gespeichert und der Nutzer zur Startseite weitergeleitet.
+
+2. Registrierung
+Wenn der Nutzer noch nicht angemeldet ist, kommt er über einen Button zur Registrierungsseite. Hier muss er auch Benutzername und Passwort eingeben. Nach der Registrierung muss der Nutzer wieder zurück zur Login-Seite um sich anzumelden. 
+
+3. Empfehlungsseite (Filter und Vorschläge)
+Die Empfehlungsseite ist die zentrale Ansicht nach dem Login. Sie zeigt alle Pflanzen, die den ausgewählten Kriterien entsprechen. Jede Pflanzenkarte enthält die wichtigsten Eigenschaften und bietet einen Button, um die Pflanze direkt zu den Favoriten hinzuzufügen. Die Daten werden dynamisch aus dem Backend geladen und aktualisieren sich automatisch, sobald sich die Filter ändern.
+
+Die Anwendung bietet mehrere Filtermöglichkeiten wie Pflanzenart, Bodenart, Sonnenlicht, Klimazone, Wasserbedarf und Erntezeit. Werden keine Filter gesetzt, zeigt die Anwendung automatisch alle verfügbaren Pflanzen an.
+
+
+Jede vorgeschlagene Pflanze wird in einer Karte dargestellt und enthält die wichtigsten Eigenschaften. Über einen Button kann eine Pflanze direkt zu den Favoriten hinzugefügt werden. Die Liste der Vorschläge aktualisiert sich automatisch, sobald ein Filter geändert wird.
+
+4. Favoritenansicht
+ 
+Hier sieht der Nutzer alle gespeicherten Pflanzen und die (gefilterten) Eigenschaften. Favoriten können über einen Button wieder entfernt. Die Favoriten werden nutzerspezifisch gespeichert. Das heißt jeder Nutzer sieht nur seine eigenen Favoriten.
+
+5. Admin-Bereich
+ 
+Dieser Bereich ist nur für Admin-Nutzer sichtbar. Der Admin kann neue Pflanzen zur Datenbank hinzufügen. Er muss dafür alle Kriterien über ein Dropdown-Menü auswählen. Die Änderungen sind dann sofort in der Empfehlungsliste sichtbar.
+
+6. Navigation 
+  
+Die Navigation passt sich dem Login-Status und der Rolle des Nutzers an. Ist ein Nutzer Admin, erscheint automatisch ein zusätzlicher Eintrag in der Navigation.
+
+
+6.3 Bewertung des Ergebnisses
+Die Anwendung erfüllt alle funktionalen Anforderungen vollständig:
+•	Registrierung und Login funktionieren zuverlässig
+•	Rollenlogik ist korrekt umgesetzt
+•	Pflanzen werden als Cards empfohlen
+•	Pflanzen können über verschiedene Kriterien gefiltert werden
+•	Favoriten werden nutzerspezifisch gespeichert
+•	Admin kann Pflanzen anlegen und löschen
+•	UI ist klar strukturiert und übersichtlich
+•	Alle Komponenten arbeiten stabil zusammen
+
+Technisch entspricht das Projekt dem, was im Modul T4 behandelt wurde (SPA, REST, CRUD, Authentifizierung, Persistenz).
+Der Aufbau ist klar verständlich und lässt sich gut erweitern (z. B. zusätzliche Filter, mehr Pflanzenattribute oder zukünftige API-Anbindung).
+Grundsätzlich bin ich mit dem Ergebnis zufrieden. Die Anforderungen, die in der Aufgabenstellung gefordert waren, sowie die Features die ich umsetzen wollte funktionieren zuverlässig. 

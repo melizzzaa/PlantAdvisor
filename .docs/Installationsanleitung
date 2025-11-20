@@ -1,0 +1,54 @@
+A. Installationsanleitung
+
+1. Voraussetzungen
+Damit die Anwendung lokal gestartet werden kann, müssen zwei Programme installiert sein:
+Deno (für das Backend / Server)
+Installation:
+•	Webseite öffnen:
+https://docs.deno.com/runtime/getting_started/installation/ 
+•	Dort die passende Version für Ihr Betriebssystem auswählen.
+•	Installation durchführen
+
+Node.js (für das Frontend / Vue)
+Node.js wird benötigt, um die Vue-Anwendung zu starten.
+Installation:
+•	Webseite öffnen:
+https://nodejs.org/en/download
+•	Die LTS-Version herunterladen
+•	Installer ausführen
+•	Nach der Installation ist automatisch auch npm verfügbar 
+
+2. Projekt herunterladen
+•	Die ZIP-Datei mit dem Projekt herunterladen
+•	ZIP-Datei entpacken
+•	Den entpackten Ordner öffnen
+•	Das Projekt enthält zwei Ordner: backend/ und frontend/
+•	Beide müssen separat gestartet werden
+
+3. Backend starten 
+•	Ein Terminal / Kommandozeilenfenster öffnen (Windows: Eingabeaufforderung oder PowerShell, macOS: Terminal)
+•	In den Backend-Ordner wechseln:
+cd backend/routes
+•	Den Server starten:
+deno run --allow-net --allow-read --allow-write server.ts
+Wenn alles funktioniert, steht im Terminal eine Meldung wie:
+Backend läuft auf http://localhost:8000/api/test  
+
+4. Frontend starten 
+•	Ein neues Terminalfenster öffnen
+•	In den Frontend-Ordner wechseln:
+cd frontend
+•	Abhängigkeiten installieren (nur beim ersten Mal):
+npm install
+•	Frontend starten:
+npm run dev
+Die Entwicklungsumgebung zeigt eine URL an, z. B.:
+http://localhost:5173
+Diese Adresse im Browser öffnen um Anwendung zu starten
+
+5. Zusammenfassung
+Backend läuft auf http://localhost:8000/api/test 
+Frontend läuft auf http://localhost:5173
+Beide müssen gleichzeitig laufen
+Anmerkung:
+Die Applikation wurde bisher nur in Chrome auf macOS und Windows getestet.
